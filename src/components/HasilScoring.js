@@ -65,7 +65,7 @@ export function renderHasilScoring(applicant, scoreResult) {
 
   return `
     <div class="card" data-component="hasil-scoring">
-      <h2>Hasil simulasi SLIK OJK (demo)</h2>
+      <h2>Hasil simulasi skor kredit</h2>
       <p class="hint" style="margin-top:0;">Nasabah: <strong style="color:var(--text);">${esc(applicant.fullName)}</strong></p>
       <div class="score-ring">
         <div class="score-value" style="color:${riskColor};">Kol ${r.kolektibilitas}</div>
