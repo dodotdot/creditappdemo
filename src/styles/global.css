@@ -130,6 +130,7 @@ label {
 input[type='text'],
 input[type='number'],
 input[type='tel'],
+input[type='email'],
 select {
   width: 100%;
   padding: 0.62rem 0.78rem;
@@ -168,6 +169,7 @@ select:focus {
   font-family: inherit;
   cursor: pointer;
   transition: transform 0.12s ease, filter 0.12s ease;
+  margin-top: 24px;
 }
 
 .btn:active {

@@ -15,6 +15,11 @@ export function renderFormPengajuan(applicant) {
             value="${safe(applicant.fullName)}" placeholder="Sesuai KTP" />
         </div>
         <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required
+            value="${safe(applicant.email)}" placeholder="example@gmail.com" />
+        </div>
+        <div class="field">
           <label for="phone">Nomor telepon</label>
           <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
             value="${safe(applicant.phone)}" placeholder="08xxxxxxxxxx" />
@@ -70,6 +75,7 @@ export function attachFormPengajuan(container, store) {
     store.setState({
       applicant: {
         fullName: String(fd.get('fullName') || '').trim(),
+        email: String(fd.get('email') || '').trim(),
         phone: String(fd.get('phone') || '').trim(),
         monthlyIncome: fd.get('monthlyIncome'),
         monthlyDebt: fd.get('monthlyDebt'),

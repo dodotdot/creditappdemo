@@ -2,6 +2,7 @@ export const initialState = {
   step: 'form',
   applicant: {
     fullName: '',
+    email:'',
     phone: '',
     monthlyIncome: '',
     monthlyDebt: '',
