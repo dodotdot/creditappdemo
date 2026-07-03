@@ -101,12 +101,17 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 3. Jawab pertanyaan berikut (tulis jawaban Anda):
 
 **Pertanyaan 1.2.A**  
-Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?  
+Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?
 Mengapa?
 
 **Pertanyaan 1.2.B**  
 Di tab **Console**, expand log `[Credit Scoring — API Dummy] POST simulasi`.  
 Field apa saja yang dicetak? URL mana yang ditampilkan?
+URL: http://localhost:8080/api/v1/credit-scoring/simulate
+creditScoring.js:97 Method: POST
+creditScoring.js:98 Headers: {Content-Type: 'application/json', Accept: 'application/json'}Accept: "application/json"Content-Type: "application/json"[[Prototype]]: Object
+creditScoring.js:99 Request body: {applicant: {…}, financial: {…}, credit_profile: {…}}applicant: {full_name: 'Budi Santoso', phone_number: '08123456789'}credit_profile: {payment_history: 'baik'}financial: {monthly_income: 8500000, monthly_expense: 0, existing_installment: 2200000, requested_amount: 40000000, requested_tenure: 12, …}[[Prototype]]: Object
+creditScoring.js:101 Response:
 
 **Pertanyaan 1.2.C**  
 Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat` diambil?
@@ -131,8 +136,11 @@ Petunjuk: mulai dari `VerifikasiDokumen.js` → `App.js` → `HasilScoring.js` �
 ## Quiz Sesi 1 (10 menit)
 
 1. Sebutkan **4 layer** yang disebut di materi workshop dan contoh masalah masing-masing pada creditappdemo.
+Browser, Frontend, Backend, Database
 2. Mengapa bug integrasi sering tidak terlihat saat unit test frontend saja?
+Karena Mock tidak sesuai dengan real case di production atau tidak sesuai dengan API yang ada di production
 3. Apa perbedaan perilaku `scoreWithMock()` dan `callUatBackend()`?
+scoreWithMock hanya melakukan perhitungan dengan mengambil state store dan kalkulasi di FE lalu mengembalikan response. Sementara uatBackEnd akan mengirimkan request body kepada backend dengan mengambil data dari store dan set object pada function request dan melakukan pengembalian response yang didapat dari fetching API sesuai dengan url dari file environement.
 
 ---
 

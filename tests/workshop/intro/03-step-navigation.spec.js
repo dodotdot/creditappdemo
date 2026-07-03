@@ -34,13 +34,13 @@ test.describe('Intro 3 — Step navigation', () => {
    * 3. Klik tombol Periksa pada dokumen pertama
    * 4. Assert badge "Terverifikasi" terlihat
    */
-  test.skip('TODO peserta: klik Periksa pada dokumen pertama', async ({ page }) => {
+  test('TODO peserta: klik Periksa pada dokumen pertama', async ({ page }) => {
     await page.goto('/');
-    // await fillMinimalForm(page);
-    // await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
-    // await expect(page.locator('[data-component="verifikasi-dokumen"]')).toBeVisible();
+    await fillMinimalForm(page);
+    await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
+    await expect(page.locator('[data-component="verifikasi-dokumen"]')).toBeVisible();
 
-    // await page.locator('[data-verify]').first().click();
-    // await expect(page.getByText('Terverifikasi').first()).toBeVisible();
+    await page.locator('[data-verify]').first().click();
+    await expect(page.getByText('Terverifikasi').first()).toBeVisible();
   });
 });
