@@ -103,14 +103,33 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 **Pertanyaan 1.2.A**  
 Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?  
 Mengapa?
-Adaaa, karena kita kan 
+
+**Jawaban**
+Tidak ada
+
 **Pertanyaan 1.2.B**  
 Di tab **Console**, expand log `[Credit Scoring — API Dummy] POST simulasi`.  
 Field apa saja yang dicetak? URL mana yang ditampilkan?
 
+**Jawaban**
+[Credit Scoring — API Dummy] POST simulasi
+creditScoring.js:96 URL: http://localhost:8080/api/v1/credit-scoring/simulate
+creditScoring.js:97 Method: POST
+creditScoring.js:98 Headers: Object
+creditScoring.js:99 Request body: Object
+creditScoring.js:101 Response: Object
+
 **Pertanyaan 1.2.C**  
 Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat` diambil?
 
+**Jawaban**
+Line 158
+`export async function scoreCreditApplication(input) {
+  if (SCORING_MODE === 'uat') {
+    return callUatBackend(input);
+  }
+  return scoreWithMock(input);
+}`
 ---
 
 ## Lab 1.3 — Diagram layer (latihan individu)
@@ -120,7 +139,8 @@ Gambar alur untuk skenario: *user klik "Lanjut scoring" sampai angka Kol muncul*
 Format minimal:
 
 ```
-[User click] → [???] → [???] → [???] → [UI render hasil]
+**Jawaban**
+[User click] → [store.setState di const = lanjut di function attachVerifikasiDokumen] → [scheduleScoring() di App.js] → [scoreCreditApplication(input) untuk ngecek dia mock atau uat] → [renderHasilScoring() = UI render hasil]
 ```
 
 Isi `???` dengan nama file/fungsi yang relevan di repo ini.  
@@ -131,7 +151,11 @@ Petunjuk: mulai dari `VerifikasiDokumen.js` → `App.js` → `HasilScoring.js` �
 ## Quiz Sesi 1 (10 menit)
 
 1. Sebutkan **4 layer** yang disebut di materi workshop dan contoh masalah masing-masing pada creditappdemo.
+**Jawaban**
+Browser, FE, BE, Database
 2. Mengapa bug integrasi sering tidak terlihat saat unit test frontend saja?
+**Jawaban**
+Karena mock API tidak sesuai/tidak sync dengan API aslinya
 3. Apa perbedaan perilaku `scoreWithMock()` dan `callUatBackend()`?
 
 ---
