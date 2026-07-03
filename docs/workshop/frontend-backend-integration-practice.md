@@ -104,13 +104,23 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?  
 Mengapa?
 
+Ada, karena kita melakukan hit api untuk proses request risk assessment kredit (simulation credit)
+
 **Pertanyaan 1.2.B**  
 Di tab **Console**, expand log `[Credit Scoring — API Dummy] POST simulasi`.  
 Field apa saja yang dicetak? URL mana yang ditampilkan?
 
+[Credit Scoring — API Dummy] POST simulasi
+creditScoring.js:96 URL: http://localhost:8080/api/v1/credit-scoring/simulate
+creditScoring.js:97 Method: POST
+creditScoring.js:98 Headers: ObjectAccept: "application/json"Content-Type: "application/json"[[Prototype]]: Object
+creditScoring.js:99 Request body: Objectapplicant: {full_name: 'Park Daniella', phone_number: '8888888888'}credit_profile: {payment_history: 'baik'}financial: {monthly_income: 500000, monthly_expense: 0, existing_installment: 50000, requested_amount: 1000000, requested_tenure: 12, …}[[Prototype]]: Object
+creditScoring.js:101 Response: 
+
 **Pertanyaan 1.2.C**  
 Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat` diambil?
 
+158
 ---
 
 ## Lab 1.3 — Diagram layer (latihan individu)

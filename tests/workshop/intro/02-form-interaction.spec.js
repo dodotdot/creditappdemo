@@ -21,21 +21,21 @@ test.describe('Intro 2 — Form interaction', () => {
    * 2. Isi field Nomor telepon dengan '08123456789'
    * 3. Assert nilai input dengan toHaveValue
    */
-  test.skip('TODO peserta: isi nomor telepon', async ({ page }) => {
+  test('TODO peserta: isi nomor telepon', async ({ page }) => {
     await page.goto('/');
 
-    // await page.getByLabel('Nomor telepon').fill('08123456789');
-    // await expect(page.getByLabel('Nomor telepon')).toHaveValue('08123456789');
+    await page.getByLabel('Nomor telepon').fill('08123456789');
+    await expect(page.getByLabel('Nomor telepon')).toHaveValue('08123456789');
   });
 
   /**
    * TODO PESERTA (opsional):
    * Isi penghasilan bulanan 8500000 dan assert toHaveValue.
    */
-  test.skip('TODO opsional: isi penghasilan bulanan', async ({ page }) => {
+  test('TODO opsional: isi penghasilan bulanan', async ({ page }) => {
     await page.goto('/');
 
-    // await page.getByLabel('Penghasilan bulanan (Rp)').fill('8500000');
-    // await expect(page.locator('#monthlyIncome')).toHaveValue('8500000');
+    await page.getByLabel('Penghasilan bulanan (Rp)').fill('8500000');
+    await expect(page.locator('#monthlyIncome')).toHaveValue('8500000');
   });
 });

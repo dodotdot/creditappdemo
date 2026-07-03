@@ -72,9 +72,9 @@ npx playwright test tests/workshop/intro/01-page-load.spec.js
 
 **Checklist setelah tes hijau:**
 
-- [ ] `page.goto('/')` memakai `baseURL` dari `playwright.config.js` (`http://localhost:5173`)
-- [ ] `getByRole('heading', …)` mencari elemen aksesibel (lebih stabil daripada CSS sembarangan)
-- [ ] `[data-component="form-pengajuan"]` adalah selector khusus demo ini untuk langkah formulir
+- [X] `page.goto('/')` memakai `baseURL` dari `playwright.config.js` (`http://localhost:5173`)
+- [x] `getByRole('heading', …)` mencari elemen aksesibel (lebih stabil daripada CSS sembarangan)
+- [x] `[data-component="form-pengajuan"]` adalah selector khusus demo ini untuk langkah formulir
 
 **Refleksi (2 menit):** Mengapa `getByRole` lebih disarankan daripada `page.locator('h1')`?
 
