@@ -1,5 +1,9 @@
 # Dokumentasi proyek
 
+## Workshop (latihan praktik)
+
+Materi hands-on **Frontend–Backend Integration & Debugging** untuk peserta workshop: [`workshop/README.md`](workshop/README.md).
+
 ## API
 
 - **Markdown ringkas:** [`api/credit-scoring.md`](api/credit-scoring.md) — termasuk skema **`aegira`** (snake_case, DSR/eligibility) vs **`kreditku`** (legacy), selaras referensi [Aegira Loan Service](https://github.com/khalidalhabibie/aegira-loan-service/blob/master/README.md).
