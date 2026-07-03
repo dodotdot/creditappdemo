@@ -139,7 +139,7 @@ function buildMockAegiraMeta(input, ctx) {
     income > 0 ? Math.round(((debt + newInstallment) / income) * 10000) / 100 : null;
 
   const kol = ctx.kolektibilitas;
-  const eligible = kol <= 2 ? true : kol === 3 ? false : false;
+  const eligible = kol <= 2 ? true : kol === 3 ? false : false  ;
 
   return {
     currentDsr,
