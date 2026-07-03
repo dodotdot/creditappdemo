@@ -14,22 +14,17 @@ import {
   buildScoringRequestBody,
   normalizeScoringResponse,
   getDefaultRequestedTenure,
-} from "./scoringContract.js";
+} from './scoringContract.js';
 
 const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
-const SCORING_MODE = (
-  import.meta.env.VITE_SCORING_MODE || "mock"
-).toLowerCase();
-const BACKEND_BASE_URL =
-  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:8080";
-const BACKEND_SCORING_PATH =
-  import.meta.env.VITE_SCORING_PATH || "/api/v1/credit-scoring/simulate";
+const SCORING_MODE = (import.meta.env.VITE_SCORING_MODE || 'mock').toLowerCase();
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:8080';
+const BACKEND_SCORING_PATH = import.meta.env.VITE_SCORING_PATH || '/api/v1/credit-scoring/simulate';
 
 /** @typedef {'sangat_baik' | 'baik' | 'cukup' | 'buruk'} RiwayatPembayaran */
 
 /**
  * @typedef {{
- *  fullName: string;
  *  fullName: string;
  *  phone: string;
  *  monthlyIncome: number;
@@ -94,22 +89,19 @@ function logDummyApiDebug(ctx) {
   if (!import.meta.env.DEV) return;
 
   const title =
-    ctx.mode === "mock"
-      ? "[Credit Scoring — API Dummy] POST simulasi"
-      : "[Credit Scoring — UAT Backend] POST";
+    ctx.mode === 'mock'
+      ? '[Credit Scoring — API Dummy] POST simulasi'
+      : '[Credit Scoring — UAT Backend] POST';
   console.groupCollapsed(title);
-  console.log("URL:", ctx.url);
-  console.log("Method: POST");
-  console.log("Headers:", {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  });
-  console.log("Request body:", ctx.payload);
+  console.log('URL:', ctx.url);
+  console.log('Method: POST');
+  console.log('Headers:', { 'Content-Type': 'application/json', Accept: 'application/json' });
+  console.log('Request body:', ctx.payload);
   if (ctx.response !== undefined) {
-    console.log("Response:", ctx.response);
+    console.log('Response:', ctx.response);
   }
   if (ctx.error !== undefined) {
-    console.error("Error:", ctx.error);
+    console.error('Error:', ctx.error);
   }
   console.groupEnd();
 }
@@ -119,11 +111,11 @@ function logDummyApiDebug(ctx) {
  * @returns {string}
  */
 function kolektibilitasToRiskLevel(kol) {
-  if (kol <= 1) return "LOW";
-  if (kol === 2) return "MEDIUM";
-  if (kol === 3) return "MEDIUM";
-  if (kol === 4) return "HIGH";
-  return "HIGH";
+  if (kol <= 1) return 'LOW';
+  if (kol === 2) return 'MEDIUM';
+  if (kol === 3) return 'MEDIUM';
+  if (kol === 4) return 'HIGH';
+  return 'HIGH';
 }
 
 /**
@@ -142,12 +134,9 @@ function buildMockAegiraMeta(input, ctx) {
   const loanAmount = Number(input.loanAmount) || 0;
   const newInstallment = tenure > 0 && loanAmount > 0 ? loanAmount / tenure : 0;
 
-  const currentDsr =
-    income > 0 ? Math.round((debt / income) * 10000) / 100 : null;
+  const currentDsr = income > 0 ? Math.round((debt / income) * 10000) / 100 : null;
   const projectedDsr =
-    income > 0
-      ? Math.round(((debt + newInstallment) / income) * 10000) / 100
-      : null;
+    income > 0 ? Math.round(((debt + newInstallment) / income) * 10000) / 100 : null;
 
   const kol = ctx.kolektibilitas;
   const eligible = kol <= 2 ? true : kol === 3 ? false : false;
@@ -167,7 +156,7 @@ function buildMockAegiraMeta(input, ctx) {
  * @returns {Promise<CreditScoringResponse>}
  */
 export async function scoreCreditApplication(input) {
-  if (SCORING_MODE === "uat") {
+  if (SCORING_MODE === 'uat') {
     return callUatBackend(input);
   }
   return scoreWithMock(input);
@@ -182,25 +171,23 @@ async function callUatBackend(input) {
 
   try {
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
       const text = await res.text();
-      const err = new Error(
-        `Backend scoring gagal (${res.status}): ${text || res.statusText}`,
-      );
-      logDummyApiDebug({ mode: "uat", url, payload, error: err.message });
+      const err = new Error(`Backend scoring gagal (${res.status}): ${text || res.statusText}`);
+      logDummyApiDebug({ mode: 'uat', url, payload, error: err.message });
       throw err;
     }
 
     const json = await res.json();
-    logDummyApiDebug({ mode: "uat", url, payload, response: json });
+    logDummyApiDebug({ mode: 'uat', url, payload, response: json });
     const normalized = normalizeScoringResponse(json);
 
     return {
@@ -209,21 +196,16 @@ async function callUatBackend(input) {
       internalScore: normalized.internalScore,
       breakdown: normalized.breakdown,
       recommendation:
-        normalized.recommendation || "Tidak ada rekomendasi dari backend.",
-      source: "uat-backend",
-      traceId: normalized.traceId || makeTraceId("uat"),
+        normalized.recommendation || 'Tidak ada rekomendasi dari backend.',
+      source: 'uat-backend',
+      traceId: normalized.traceId || makeTraceId('uat'),
       evaluatedAt: normalized.evaluatedAt || new Date().toISOString(),
       aegira: normalized.aegira,
     };
   } catch (error) {
-    if (
-      !(
-        error instanceof Error &&
-        error.message.startsWith("Backend scoring gagal")
-      )
-    ) {
+    if (!(error instanceof Error && error.message.startsWith('Backend scoring gagal'))) {
       logDummyApiDebug({
-        mode: "uat",
+        mode: 'uat',
         url,
         payload,
         error: error instanceof Error ? error.message : error,
@@ -274,30 +256,29 @@ async function scoreWithMock(input) {
   const internalScore = clamp(Math.round(weighted), 0, 100);
 
   let kolektibilitas = 5;
-  let kolektibilitasLabel = "Macet";
+  let kolektibilitasLabel = 'Macet';
   let recommendation =
-    "Risiko tinggi: perlu perbaikan riwayat pembayaran dan rasio utang sebelum diproses.";
+    'Risiko tinggi: perlu perbaikan riwayat pembayaran dan rasio utang sebelum diproses.';
 
   if (internalScore >= 85) {
     kolektibilitas = 1;
-    kolektibilitasLabel = "Lancar";
-    recommendation =
-      "Sangat baik: profil pembayaran lancar, layak diprioritaskan.";
+    kolektibilitasLabel = 'Lancar';
+    recommendation = 'Sangat baik: profil pembayaran lancar, layak diprioritaskan.';
   } else if (internalScore >= 72) {
     kolektibilitas = 2;
-    kolektibilitasLabel = "Dalam Perhatian Khusus";
+    kolektibilitasLabel = 'Dalam Perhatian Khusus';
     recommendation =
-      "Cukup baik: dapat diproses dengan monitoring dan verifikasi lanjutan.";
+      'Cukup baik: dapat diproses dengan monitoring dan verifikasi lanjutan.';
   } else if (internalScore >= 58) {
     kolektibilitas = 3;
-    kolektibilitasLabel = "Kurang Lancar";
+    kolektibilitasLabel = 'Kurang Lancar';
     recommendation =
-      "Perlu mitigasi: pertimbangkan plafon lebih rendah atau tenor lebih pendek.";
+      'Perlu mitigasi: pertimbangkan plafon lebih rendah atau tenor lebih pendek.';
   } else if (internalScore >= 45) {
     kolektibilitas = 4;
-    kolektibilitasLabel = "Diragukan";
+    kolektibilitasLabel = 'Diragukan';
     recommendation =
-      "Risiko tinggi: butuh dokumen tambahan dan analisis manual.";
+      'Risiko tinggi: butuh dokumen tambahan dan analisis manual.';
   }
 
   const aegira = buildMockAegiraMeta(input, {
@@ -306,7 +287,7 @@ async function scoreWithMock(input) {
     debt,
   });
 
-  const traceId = makeTraceId("mock");
+  const traceId = makeTraceId('mock');
   const evaluatedAt = new Date().toISOString();
 
   const result = {
@@ -320,14 +301,14 @@ async function scoreWithMock(input) {
       dtiRatio: income > 0 ? Math.round(dti * 1000) / 10 : null,
     },
     recommendation,
-    source: "mock",
+    source: 'mock',
     traceId,
     evaluatedAt,
     aegira,
   };
 
   logDummyApiDebug({
-    mode: "mock",
+    mode: 'mock',
     url,
     payload,
     response: {

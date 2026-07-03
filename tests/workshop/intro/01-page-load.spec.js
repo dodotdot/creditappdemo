@@ -20,6 +20,7 @@ test.describe('Intro 1 — Page load', () => {
     await page.goto('/');
 
     await expect(page.getByLabel('Nama lengkap')).toBeVisible();
+    await expect(page.getByLabel('Email')).toBeVisible();
     await expect(page.getByLabel('Nomor telepon')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Lanjut verifikasi dokumen' })).toBeVisible();
   });
