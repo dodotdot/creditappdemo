@@ -3,6 +3,7 @@
  * @param {import('@playwright/test').Page} page
  * @param {Partial<{
  *   fullName: string;
+ *   email: string;
  *   phone: string;
  *   monthlyIncome: string;
  *   monthlyDebt: string;
@@ -11,15 +12,17 @@
  */
 export async function fillApplicationForm(page, overrides = {}) {
   const data = {
-    fullName: 'Budi Santoso',
-    phone: '08123456789',
-    monthlyIncome: '8500000',
-    monthlyDebt: '2200000',
-    loanAmount: '40000000',
+    fullName: "Budi Santoso",
+    email: "budi@gmail.com",
+    phone: "08123456789",
+    monthlyIncome: "8500000",
+    monthlyDebt: "2200000",
+    loanAmount: "40000000",
     ...overrides,
   };
 
   await page.locator('#fullName').fill(data.fullName);
+  await page.locator("#email").fill(data.email);
   await page.locator('#phone').fill(data.phone);
   await page.locator('#monthlyIncome').fill(data.monthlyIncome);
   await page.locator('#monthlyDebt').fill(data.monthlyDebt);

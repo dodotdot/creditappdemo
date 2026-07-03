@@ -84,11 +84,11 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 
 **Checklist verifikasi:**
 
-- [ ] Elemen `[data-component="form-pengajuan"]` tampil di langkah 1
-- [ ] Elemen `[data-component="verifikasi-dokumen"]` tampil di langkah 2
-- [ ] Elemen `[data-component="scoring-loading"]` tampil sebentar di langkah 4
-- [ ] Elemen `[data-component="hasil-scoring"]` tampil di langkah 5
-- [ ] Trace ID terlihat di bagian bawah hasil (format `mock-<timestamp>-<random>`)
+- [V] Elemen `[data-component="form-pengajuan"]` tampil di langkah 1
+- [V] Elemen `[data-component="verifikasi-dokumen"]` tampil di langkah 2
+- [V] Elemen `[data-component="scoring-loading"]` tampil sebentar di langkah 4
+- [V] Elemen `[data-component="hasil-scoring"]` tampil di langkah 5
+- [V] Trace ID terlihat di bagian bawah hasil (format `mock-<timestamp>-<random>`)
 
 ---
 
@@ -101,15 +101,18 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 3. Jawab pertanyaan berikut (tulis jawaban Anda):
 
 **Pertanyaan 1.2.A**  
-Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?  
+Apakah ada request HTTP `POST` ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`?
 Mengapa?
 
 **Pertanyaan 1.2.B**  
 Di tab **Console**, expand log `[Credit Scoring — API Dummy] POST simulasi`.  
 Field apa saja yang dicetak? URL mana yang ditampilkan?
 
+
 **Pertanyaan 1.2.C**  
-Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat` diambil?
+Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat` diambil? 
+
+
 
 ---
 
