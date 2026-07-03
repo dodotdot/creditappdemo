@@ -3,6 +3,7 @@ export const initialState = {
   applicant: {
     fullName: '',
     phone: '',
+    email: '',
     monthlyIncome: '',
     monthlyDebt: '',
     loanAmount: '',

@@ -121,6 +121,7 @@ Format minimal:
 
 ```
 [User click] → [???] → [???] → [???] → [UI render hasil]
+ -> Memanggil function scheduleScoring di App.js -> Render hasil scoring di file HasilScoring.js
 ```
 
 Isi `???` dengan nama file/fungsi yang relevan di repo ini.  
