@@ -175,6 +175,7 @@ export async function runScoring(store) {
   try {
     const result = await scoreCreditApplication({
       fullName: applicant.fullName,
+      email: applicant.email,
       phone: applicant.phone,
       monthlyIncome: Number(applicant.monthlyIncome) || 0,
       monthlyDebt: Number(applicant.monthlyDebt) || 0,
