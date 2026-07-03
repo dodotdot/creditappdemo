@@ -29,30 +29,39 @@
 
 **1.2.A** — Ada POST ke `/api/v1/credit-scoring/simulate` saat `VITE_SCORING_MODE=mock`? Mengapa?
 
-**Jawaban:** Ada, karena kita melakukan hit api untuk proses request risk assessment kredit (simulation credit)
+**Jawaban:** tidak ada, karena belum ada backend asli karena masih menggunakan mock
 
 
 **1.2.B** — Field apa di log `[Credit Scoring — API Dummy]`? URL?
 
-**Jawaban:**
+**Jawaban:** 
+![Jawaban1-2-B](jawaban1-2-c.jpeg)
 
 
 **1.2.C** — Baris keputusan `mock` vs `uat` di `creditScoring.js`?
 
-**Jawaban:**
+**Jawaban:** 158
+```
+export async function scoreCreditApplication(input) {
+  if (SCORING_MODE === 'uat') {
+    return callUatBackend(input);
+  }
+  return scoreWithMock(input);
+}
+```
 
 
 ### Lab 1.3 — Diagram layer
 
 ```
-[User click "Lanjut scoring otomatis"] → ... → ... → ... → [UI render hasil]
+[User click "Lanjut scoring otomatis"] → setState = Verifikasi Dokumen → ScheduleScoring = aap.js  → ScoreCreditApplication : CreditScoring,js → [UI render hasil]
 ```
 
 ### Quiz Sesi 1
 
-1.
-2.
-3.
+1. browser, frontend, api backend, database
+2. karena menggunakan MOCK yang dimana tidak sesuai dengan di real production
+3. scoreWithMock bekerja menggunakan data dummy, sedangkan callUatBackend melakukan request ke API Backend menggunakan fetch JavaScript dan memanfaatkan data yang sebenarnya (real data).
 
 ---
 
@@ -67,7 +76,7 @@
 | C | `uat`, URL `:9999` | | |
 | D | `uat`, path salah | | |
 
-**2.1.A** — Pesan error skenario B (salin teks persis):
+**2.1.A** — Pesan error skenario B (salin teks persis): 
 
 **2.1.B** — Status Network skenario C:
 
@@ -94,8 +103,14 @@
 ### Lab 2.4 / Quiz Sesi 2
 
 **2.4.A** — Mengapa browser memeriksa CORS?
+Browser memeriksa CORS untuk mencegah website lain mengakses resource/API lintas origin tanpa izin 
 
 **2.4.B** — Header response apa yang dibutuhkan untuk POST JSON?
+```
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST, OPTIONS
+Access-Control-Allow-Headers: Content-Type
+```
 
 Quiz 1–3:
 
