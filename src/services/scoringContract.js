@@ -37,6 +37,7 @@ export function buildScoringRequestBody(input) {
       applicant: {
         fullName: input.fullName,
         phone: input.phone,
+        email: input.email,
       },
       financial: {
         monthlyIncome: Number(input.monthlyIncome) || 0,
@@ -54,6 +55,7 @@ export function buildScoringRequestBody(input) {
     applicant: {
       full_name: String(input.fullName || '').trim(),
       phone_number: String(input.phone || '').trim(),
+      email:String(input.email || '').trim(),
     },
     financial: {
       monthly_income: Number(input.monthlyIncome) || 0,

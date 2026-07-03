@@ -9,6 +9,7 @@ import { test, expect } from '@playwright/test';
 
 async function fillMinimalForm(page) {
   await page.getByLabel('Nama lengkap').fill('Budi Santoso');
+  await page.getByLabel('email').fill('budisantoso@gmail.com');
   await page.getByLabel('Nomor telepon').fill('08123456789');
   await page.getByLabel('Penghasilan bulanan (Rp)').fill('8500000');
   await page.getByLabel('Total cicilan & utang bulanan saat ini (Rp)').fill('2200000');
@@ -34,13 +35,13 @@ test.describe('Intro 3 — Step navigation', () => {
    * 3. Klik tombol Periksa pada dokumen pertama
    * 4. Assert badge "Terverifikasi" terlihat
    */
-  test.skip('TODO peserta: klik Periksa pada dokumen pertama', async ({ page }) => {
+  test('TODO peserta: klik Periksa pada dokumen pertama', async ({ page }) => {
     await page.goto('/');
-    // await fillMinimalForm(page);
-    // await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
-    // await expect(page.locator('[data-component="verifikasi-dokumen"]')).toBeVisible();
+    await fillMinimalForm(page);
+    await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
+    await expect(page.locator('[data-component="verifikasi-dokumen"]')).toBeVisible();
 
-    // await page.locator('[data-verify]').first().click();
-    // await expect(page.getByText('Terverifikasi').first()).toBeVisible();
+    await page.locator('[data-verify]').first().click();
+    await expect(page.getByText('Terverifikasi').first()).toBeVisible();
   });
 });

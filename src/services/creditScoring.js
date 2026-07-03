@@ -27,6 +27,7 @@ const BACKEND_SCORING_PATH = import.meta.env.VITE_SCORING_PATH || '/api/v1/credi
  * @typedef {{
  *  fullName: string;
  *  phone: string;
+ *  email:string;
  *  monthlyIncome: number;
  *  monthlyDebt: number;
  *  loanAmount: number;
