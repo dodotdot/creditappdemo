@@ -28,7 +28,9 @@
               "schema": {
                 "oneOf": [
                   { "$ref": "#/components/schemas/CreditScoringRequestAegira" },
-                  { "$ref": "#/components/schemas/CreditScoringRequestKreditku" }
+                  {
+                    "$ref": "#/components/schemas/CreditScoringRequestKreditku"
+                  }
                 ]
               },
               "examples": {
@@ -37,6 +39,7 @@
                   "value": {
                     "applicant": {
                       "full_name": "Budi Santoso",
+                      "email": "budisantoso@gmail.com",
                       "phone_number": "08123456789"
                     },
                     "financial": {
@@ -57,6 +60,7 @@
                   "value": {
                     "applicant": {
                       "fullName": "Budi Santoso",
+                      "email": "budisantoso@gmail.com",
                       "phone": "08123456789"
                     },
                     "financial": {
@@ -79,7 +83,9 @@
             "description": "Scoring berhasil. Frontend menerima **camelCase** setelah normalisasi; wire JSON boleh snake_case (trace_id, calculation.current_dsr, …).",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/CreditScoringResponseEnvelope" },
+                "schema": {
+                  "$ref": "#/components/schemas/CreditScoringResponseEnvelope"
+                },
                 "examples": {
                   "aegira_style": {
                     "summary": "Wire JSON snake_case + blok DSR (Aegira-style)",
@@ -161,9 +167,10 @@
         "properties": {
           "applicant": {
             "type": "object",
-            "required": ["full_name", "phone_number"],
+            "required": ["full_name", "email", "phone_number"],
             "properties": {
               "full_name": { "type": "string" },
+              "email": { "type": "string" },
               "phone_number": { "type": "string" }
             }
           },
@@ -178,11 +185,26 @@
             ],
             "properties": {
               "monthly_income": { "type": "number", "minimum": 0 },
-              "monthly_expense": { "type": "number", "minimum": 0, "default": 0 },
-              "existing_installment": { "type": "number", "minimum": 0, "description": "Cicilan/utang bulanan existing (setara existing_installment di Aegira)" },
+              "monthly_expense": {
+                "type": "number",
+                "minimum": 0,
+                "default": 0
+              },
+              "existing_installment": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Cicilan/utang bulanan existing (setara existing_installment di Aegira)"
+              },
               "requested_amount": { "type": "number", "minimum": 0 },
-              "requested_tenure": { "type": "integer", "minimum": 1, "description": "Tenor pinjaman (bulan); default frontend dari `VITE_SCORING_DEFAULT_TENURE`" },
-              "loan_purpose": { "type": "string", "description": "Teks tujuan (mis. Home renovation), dipetakan dari form demo" }
+              "requested_tenure": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Tenor pinjaman (bulan); default frontend dari `VITE_SCORING_DEFAULT_TENURE`"
+              },
+              "loan_purpose": {
+                "type": "string",
+                "description": "Teks tujuan (mis. Home renovation), dipetakan dari form demo"
+              }
             }
           },
           "credit_profile": {
@@ -204,15 +226,21 @@
         "properties": {
           "applicant": {
             "type": "object",
-            "required": ["fullName", "phone"],
+            "required": ["fullName", "email", "phone"],
             "properties": {
               "fullName": { "type": "string" },
+              "email": { "type": "string" },
               "phone": { "type": "string" }
             }
           },
           "financial": {
             "type": "object",
-            "required": ["monthlyIncome", "monthlyDebt", "requestedLoanAmount", "purpose"],
+            "required": [
+              "monthlyIncome",
+              "monthlyDebt",
+              "requestedLoanAmount",
+              "purpose"
+            ],
             "properties": {
               "monthlyIncome": { "type": "number", "minimum": 0 },
               "monthlyDebt": { "type": "number", "minimum": 0 },
@@ -240,7 +268,11 @@
         "description": "Breakdown skor 0–100; boleh camelCase atau snake_case.",
         "properties": {
           "paymentHistory": { "type": "integer", "minimum": 0, "maximum": 100 },
-          "payment_history": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "payment_history": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
           "income": { "type": "integer", "minimum": 0, "maximum": 100 },
           "debtToIncome": { "type": "integer", "minimum": 0, "maximum": 100 },
           "debt_to_income": { "type": "integer", "minimum": 0, "maximum": 100 },
@@ -268,14 +300,20 @@
           "currentDsr": { "type": "number" },
           "projected_dsr": { "type": "number" },
           "projectedDsr": { "type": "number" },
-          "monthly_installment": { "type": "number", "description": "Estimasi cicilan pinjaman baru per bulan (jika backend menyediakan)" },
+          "monthly_installment": {
+            "type": "number",
+            "description": "Estimasi cicilan pinjaman baru per bulan (jika backend menyediakan)"
+          },
           "monthlyInstallment": { "type": "number" }
         }
       },
       "EligibilityBlock": {
         "type": "object",
         "properties": {
-          "risk_level": { "type": "string", "description": "Mis. LOW, MEDIUM, HIGH" },
+          "risk_level": {
+            "type": "string",
+            "description": "Mis. LOW, MEDIUM, HIGH"
+          },
           "riskLevel": { "type": "string" },
           "eligible": { "type": "boolean" }
         }
@@ -284,7 +322,10 @@
         "type": "object",
         "description": "Envelope response; field audit boleh snake_case atau camelCase.",
         "properties": {
-          "data": { "type": "object", "description": "Opsional: wrapper Spring-style" },
+          "data": {
+            "type": "object",
+            "description": "Opsional: wrapper Spring-style"
+          },
           "trace_id": { "type": "string" },
           "traceId": { "type": "string" },
           "evaluated_at": { "type": "string", "format": "date-time" },

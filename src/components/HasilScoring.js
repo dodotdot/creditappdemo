@@ -1,11 +1,11 @@
-import { scoreCreditApplication } from '../services/creditScoring.js';
-import { initialState } from '../state/initialState.js';
+import { scoreCreditApplication } from "../services/creditScoring.js";
+import { initialState } from "../state/initialState.js";
 
 function esc(s) {
-  return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/"/g, '&quot;');
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;");
 }
 
 export function renderScoringLoading() {
@@ -24,7 +24,7 @@ export function renderScoringError(message) {
   return `
     <div class="card" data-component="scoring-error">
       <h2>Scoring gagal diproses</h2>
-      <p class="err">${esc(message || 'Terjadi kendala pada proses scoring.')}</p>
+      <p class="err">${esc(message || "Terjadi kendala pada proses scoring.")}</p>
       <p class="hint">Periksa koneksi API backend UAT atau gunakan mode mock.</p>
     </div>
   `;
@@ -34,39 +34,64 @@ export function renderHasilScoring(applicant, scoreResult) {
   const r = scoreResult;
   const br = r.breakdown;
   const dtiLabel =
-    br.dtiRatio != null ? `${br.dtiRatio}% cicilan terhadap penghasilan` : 'Tidak ada penghasilan tercatat';
+    br.dtiRatio != null
+      ? `${br.dtiRatio}% cicilan terhadap penghasilan`
+      : "Tidak ada penghasilan tercatat";
   const legendItems = [
-    { kol: 1, label: 'Lancar', desc: 'Pembayaran tertib, risiko rendah, biasanya prioritas persetujuan.' },
-    { kol: 2, label: 'Dalam Perhatian Khusus', desc: 'Ada sinyal kehati-hatian, umumnya perlu monitoring tambahan.' },
-    { kol: 3, label: 'Kurang Lancar', desc: 'Risiko menengah-tinggi, perlu mitigasi seperti plafon/tenor konservatif.' },
-    { kol: 4, label: 'Diragukan', desc: 'Risiko tinggi, umumnya perlu review manual mendalam.' },
-    { kol: 5, label: 'Macet', desc: 'Risiko sangat tinggi, biasanya tidak direkomendasikan.' },
+    {
+      kol: 1,
+      label: "Lancar",
+      desc: "Pembayaran tertib, risiko rendah, biasanya prioritas persetujuan.",
+    },
+    {
+      kol: 2,
+      label: "Dalam Perhatian Khusus",
+      desc: "Ada sinyal kehati-hatian, umumnya perlu monitoring tambahan.",
+    },
+    {
+      kol: 3,
+      label: "Kurang Lancar",
+      desc: "Risiko menengah-tinggi, perlu mitigasi seperti plafon/tenor konservatif.",
+    },
+    {
+      kol: 4,
+      label: "Diragukan",
+      desc: "Risiko tinggi, umumnya perlu review manual mendalam.",
+    },
+    {
+      kol: 5,
+      label: "Macet",
+      desc: "Risiko sangat tinggi, biasanya tidak direkomendasikan.",
+    },
   ];
   const legendHtml = legendItems
-    .map((item) => `
-      <li class="legend-item ${item.kol === r.kolektibilitas ? 'current' : ''}">
+    .map(
+      (item) => `
+      <li class="legend-item ${item.kol === r.kolektibilitas ? "current" : ""}">
         <div class="legend-top">
           <strong>Kol ${item.kol} — ${item.label}</strong>
-          ${item.kol === r.kolektibilitas ? '<span class="legend-badge">Posisi Anda</span>' : ''}
+          ${item.kol === r.kolektibilitas ? '<span class="legend-badge">Posisi Anda</span>' : ""}
         </div>
         <p class="legend-desc">${item.desc}</p>
       </li>
-    `)
-    .join('');
+    `,
+    )
+    .join("");
 
   const riskColor =
     r.kolektibilitas === 1
-      ? 'var(--success)'
+      ? "var(--success)"
       : r.kolektibilitas === 2
-        ? 'var(--accent-strong)'
+        ? "var(--accent-strong)"
         : r.kolektibilitas === 3
-          ? 'var(--warning)'
-          : 'var(--danger)';
+          ? "var(--warning)"
+          : "var(--danger)";
 
   return `
     <div class="card" data-component="hasil-scoring">
       <h2>Hasil simulasi skor kredit</h2>
       <p class="hint" style="margin-top:0;">Nasabah: <strong style="color:var(--text);">${esc(applicant.fullName)}</strong></p>
+      <p class="hint" style="margin-top:0;">Email Nasabah: <strong style="color:var(--text);">${esc(applicant.email)}</strong></p>
       <div class="score-ring">
         <div class="score-value" style="color:${riskColor};">Kol ${r.kolektibilitas}</div>
         <div class="score-label">${esc(r.kolektibilitasLabel)}</div>
@@ -90,32 +115,32 @@ export function renderHasilScoring(applicant, scoreResult) {
           ${
             r.aegira.currentDsr != null
               ? `<div class="score-row"><span>Current DSR</span><span><strong>${esc(String(r.aegira.currentDsr))}</strong>%</span></div>`
-              : ''
+              : ""
           }
           ${
             r.aegira.projectedDsr != null
               ? `<div class="score-row"><span>Projected DSR</span><span><strong>${esc(String(r.aegira.projectedDsr))}</strong>%</span></div>`
-              : ''
+              : ""
           }
           ${
             r.aegira.monthlyInstallment != null
               ? `<div class="score-row"><span>Est. cicilan baru / bulan</span><span><strong>${esc(String(r.aegira.monthlyInstallment))}</strong> Rp</span></div>`
-              : ''
+              : ""
           }
           ${
             r.aegira.riskLevel != null
               ? `<div class="score-row"><span>Risk level</span><span><strong>${esc(r.aegira.riskLevel)}</strong></span></div>`
-              : ''
+              : ""
           }
           ${
             r.aegira.eligible != null
-              ? `<div class="score-row"><span>Eligible (backend)</span><span><strong>${r.aegira.eligible ? 'Ya' : 'Tidak'}</strong></span></div>`
-              : ''
+              ? `<div class="score-row"><span>Eligible (backend)</span><span><strong>${r.aegira.eligible ? "Ya" : "Tidak"}</strong></span></div>`
+              : ""
           }
         </div>
       </div>
       `
-          : ''
+          : ""
       }
       <div class="score-detail">
         <div>
@@ -130,7 +155,7 @@ export function renderHasilScoring(applicant, scoreResult) {
             <span>Profil penghasilan</span>
             <span><strong>${br.income}</strong> / 100</span>
           </div>
-          <div class="bar"><div class="bar-fill" style="width:${br.income}%;"></div></div>
+          <div class="bar"><div class="ba xr-fill" style="width:${br.income}%;"></div></div>
         </div>
         <div>
           <div class="score-row">
@@ -146,8 +171,8 @@ export function renderHasilScoring(applicant, scoreResult) {
         <p style="margin:0.35rem 0 0;font-size:0.9rem;">${esc(r.recommendation)}</p>
         <p class="hint" style="margin:0.45rem 0 0;">Catatan: ini simulasi edukasi dan bukan data resmi SLIK OJK.</p>
         <p class="hint" style="margin:0.25rem 0 0;">
-          Sumber: <strong style="color:var(--text);">${esc(r.source || 'mock')}</strong> | Trace ID:
-          <strong style="color:var(--text);">${esc(r.traceId || '-')}</strong>
+          Sumber: <strong style="color:var(--text);">${esc(r.source || "mock")}</strong> | Trace ID:
+          <strong style="color:var(--text);">${esc(r.traceId || "-")}</strong>
         </p>
       </div>
       <div class="card" style="margin-top:0.75rem;background:var(--bg);padding:0.85rem;">
@@ -165,16 +190,17 @@ export function renderHasilScoring(applicant, scoreResult) {
 export async function runScoring(store) {
   const { applicant } = store.getState();
   const paymentMap = {
-    sangat_baik: 'sangat_baik',
-    baik: 'baik',
-    cukup: 'cukup',
-    buruk: 'buruk',
+    sangat_baik: "sangat_baik",
+    baik: "baik",
+    cukup: "cukup",
+    buruk: "buruk",
   };
-  const paymentHistory = paymentMap[applicant.paymentHistory] || 'baik';
+  const paymentHistory = paymentMap[applicant.paymentHistory] || "baik";
 
   try {
     const result = await scoreCreditApplication({
       fullName: applicant.fullName,
+      email: applicant.email,
       phone: applicant.phone,
       monthlyIncome: Number(applicant.monthlyIncome) || 0,
       monthlyDebt: Number(applicant.monthlyDebt) || 0,
@@ -185,24 +211,25 @@ export async function runScoring(store) {
 
     store.setState({
       scoreResult: result,
-      scoringPhase: 'done',
-      scoringError: '',
-      step: 'result',
+      scoringPhase: "done",
+      scoringError: "",
+      step: "result",
     });
   } catch (error) {
     store.setState({
       scoreResult: null,
-      scoringPhase: 'error',
-      scoringError: error instanceof Error ? error.message : 'Unknown scoring error',
-      step: 'result',
+      scoringPhase: "error",
+      scoringError:
+        error instanceof Error ? error.message : "Unknown scoring error",
+      step: "result",
     });
   }
 }
 
 export function attachHasilScoring(container, store) {
-  const btn = container.querySelector('#btn-reset-demo');
+  const btn = container.querySelector("#btn-reset-demo");
   if (btn) {
-    btn.addEventListener('click', () => {
+    btn.addEventListener("click", () => {
       store.setState({
         step: initialState.step,
         applicant: structuredClone(initialState.applicant),

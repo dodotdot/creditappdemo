@@ -13,7 +13,7 @@
   --radius-sm: 12px;
   --shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;
 }
 
 *,
@@ -30,7 +30,11 @@ body {
   margin: 0;
   min-height: 100dvh;
   background:
-    radial-gradient(80% 55% at 50% -8%, rgba(37, 99, 235, 0.09) 0%, rgba(37, 99, 235, 0) 70%),
+    radial-gradient(
+      80% 55% at 50% -8%,
+      rgba(37, 99, 235, 0.09) 0%,
+      rgba(37, 99, 235, 0) 70%
+    ),
     var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -127,9 +131,10 @@ label {
   margin-bottom: 0.35rem;
 }
 
-input[type='text'],
-input[type='number'],
-input[type='tel'],
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
 select {
   width: 100%;
   padding: 0.62rem 0.78rem;
@@ -167,7 +172,9 @@ select:focus {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: transform 0.12s ease, filter 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
 }
 
 .btn:active {

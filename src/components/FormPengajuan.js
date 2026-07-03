@@ -1,9 +1,9 @@
 export function renderFormPengajuan(applicant) {
   const safe = (v) =>
-    String(v ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/"/g, '&quot;');
+    String(v ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/"/g, "&quot;");
 
   return `
     <div class="card" data-component="form-pengajuan">
@@ -13,6 +13,11 @@ export function renderFormPengajuan(applicant) {
           <label for="fullName">Nama lengkap</label>
           <input id="fullName" name="fullName" type="text" autocomplete="name" required
             value="${safe(applicant.fullName)}" placeholder="Sesuai KTP" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required
+            value="${safe(applicant.email)}" placeholder="email123@email.com" />
         </div>
         <div class="field">
           <label for="phone">Nomor telepon</label>
@@ -39,45 +44,46 @@ export function renderFormPengajuan(applicant) {
         <div class="field">
           <label for="purpose">Tujuan pinjaman</label>
           <select id="purpose" name="purpose">
-            <option value="modal_kerja" ${applicant.purpose === 'modal_kerja' ? 'selected' : ''}>Modal kerja</option>
-            <option value="pendidikan" ${applicant.purpose === 'pendidikan' ? 'selected' : ''}>Pendidikan</option>
-            <option value="renovasi" ${applicant.purpose === 'renovasi' ? 'selected' : ''}>Renovasi</option>
-            <option value="lainnya" ${applicant.purpose === 'lainnya' ? 'selected' : ''}>Lainnya</option>
+            <option value="modal_kerja" ${applicant.purpose === "modal_kerja" ? "selected" : ""}>Modal kerja</option>
+            <option value="pendidikan" ${applicant.purpose === "pendidikan" ? "selected" : ""}>Pendidikan</option>
+            <option value="renovasi" ${applicant.purpose === "renovasi" ? "selected" : ""}>Renovasi</option>
+            <option value="lainnya" ${applicant.purpose === "lainnya" ? "selected" : ""}>Lainnya</option>
           </select>
         </div>
         <div class="field">
           <label for="paymentHistory">Riwayat pembayaran (kartu/kredit lain)</label>
           <select id="paymentHistory" name="paymentHistory">
-            <option value="sangat_baik" ${applicant.paymentHistory === 'sangat_baik' ? 'selected' : ''}>Sangat baik — jarang telat</option>
-            <option value="baik" ${applicant.paymentHistory === 'baik' ? 'selected' : ''}>Baik — sesekali telat</option>
-            <option value="cukup" ${applicant.paymentHistory === 'cukup' ? 'selected' : ''}>Cukup — beberapa kali telat</option>
-            <option value="buruk" ${applicant.paymentHistory === 'buruk' ? 'selected' : ''}>Buruk — sering bermasalah</option>
+            <option value="sangat_baik" ${applicant.paymentHistory === "sangat_baik" ? "selected" : ""}>Sangat baik — jarang telat</option>
+            <option value="baik" ${applicant.paymentHistory === "baik" ? "selected" : ""}>Baik — sesekali telat</option>
+            <option value="cukup" ${applicant.paymentHistory === "cukup" ? "selected" : ""}>Cukup — beberapa kali telat</option>
+            <option value="buruk" ${applicant.paymentHistory === "buruk" ? "selected" : ""}>Buruk — sering bermasalah</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">Lanjut verifikasi dokumen</button>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Lanjut verifikasi dokumen</button>
       </form>
     </div>
   `;
 }
 
 export function attachFormPengajuan(container, store) {
-  const form = container.querySelector('#form-pengajuan');
+  const form = container.querySelector("#form-pengajuan");
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(form);
     store.setState({
       applicant: {
-        fullName: String(fd.get('fullName') || '').trim(),
-        phone: String(fd.get('phone') || '').trim(),
-        monthlyIncome: fd.get('monthlyIncome'),
-        monthlyDebt: fd.get('monthlyDebt'),
-        loanAmount: fd.get('loanAmount'),
-        purpose: String(fd.get('purpose') || 'modal_kerja'),
-        paymentHistory: String(fd.get('paymentHistory') || 'baik'),
+        fullName: String(fd.get("fullName") || "").trim(),
+        email: String(fd.get("email") || "").trim(),
+        phone: String(fd.get("phone") || "").trim(),
+        monthlyIncome: fd.get("monthlyIncome"),
+        monthlyDebt: fd.get("monthlyDebt"),
+        loanAmount: fd.get("loanAmount"),
+        purpose: String(fd.get("purpose") || "modal_kerja"),
+        paymentHistory: String(fd.get("paymentHistory") || "baik"),
       },
-      step: 'verify',
+      step: "verify",
     });
   });
 }
