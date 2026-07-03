@@ -18,11 +18,11 @@ Latihan ini memperkenalkan Playwright dengan aplikasi **CreditApp Demo** yang sa
 
 ## Apa yang akan dipelajari
 
-| Latihan | File | Konsep Playwright |
-|---------|------|-------------------|
-| 1 | `intro/01-page-load.spec.js` | `test`, `page.goto`, `expect`, `getByRole`, `locator` |
-| 2 | `intro/02-form-interaction.spec.js` | `fill`, `getByLabel`, `toHaveValue` |
-| 3 | `intro/03-step-navigation.spec.js` | klik tombol, assert perubahan langkah UI |
+| Latihan | File                                | Konsep Playwright                                     |
+| ------- | ----------------------------------- | ----------------------------------------------------- |
+| 1       | `intro/01-page-load.spec.js`        | `test`, `page.goto`, `expect`, `getByRole`, `locator` |
+| 2       | `intro/02-form-interaction.spec.js` | `fill`, `getByLabel`, `toHaveValue`                   |
+| 3       | `intro/03-step-navigation.spec.js`  | klik tombol, assert perubahan langkah UI              |
 
 Setelah ketiga latihan ini, lanjut ke **use case nyata**: happy path (`01-happy-path`), env config (`02-env-config`), dan network failure (`03-network-failure`).
 
@@ -139,11 +139,11 @@ npx playwright test tests/workshop/intro/03-step-navigation.spec.js
 
 ## Dari intro ke use case nyata
 
-| Setelah intro | File use case | Apa yang ditambahkan |
-|---------------|---------------|----------------------|
-| Alur lengkap + scoring | `01-happy-path.spec.js` | loading, hasil, trace ID |
-| Env & backend | `02-env-config.spec.js` | `page.on('request')`, mode `uat` |
-| Simulasi gagal | `03-network-failure.spec.js` | `page.route()` + `route.abort()` |
+| Setelah intro          | File use case                | Apa yang ditambahkan             |
+| ---------------------- | ---------------------------- | -------------------------------- |
+| Alur lengkap + scoring | `01-happy-path.spec.js`      | loading, hasil, trace ID         |
+| Env & backend          | `02-env-config.spec.js`      | `page.on('request')`, mode `uat` |
+| Simulasi gagal         | `03-network-failure.spec.js` | `page.route()` + `route.abort()` |
 
 ```bash
 npm run test:e2e          # semua tes workshop (intro + use case)
@@ -155,23 +155,27 @@ npm run test:e2e:trace    # dengan trace untuk debugging
 ## Cheat sheet singkat
 
 ```javascript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('judul skenario', async ({ page }) => {
-  await page.goto('/');
+test("judul skenario", async ({ page }) => {
+  await page.goto("/");
 
   // Navigasi & visibility
-  await expect(page.getByRole('heading', { name: 'Pengajuan kredit digital' })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Pengajuan kredit digital" }),
+  ).toBeVisible();
 
   // Interaksi form
-  await page.getByLabel('Nama lengkap').fill('Budi Santoso');
-  await expect(page.locator('#fullName')).toHaveValue('Budi Santoso');
+  await page.getByLabel("Nama lengkap").fill("Budi Santoso");
+  await expect(page.locator("#fullName")).toHaveValue("Budi Santoso");
 
   // Klik
-  await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
+  await page.getByRole("button", { name: "Lanjut verifikasi dokumen" }).click();
 
   // Selector stabil di repo ini
-  await expect(page.locator('[data-component="verifikasi-dokumen"]')).toBeVisible();
+  await expect(
+    page.locator('[data-component="verifikasi-dokumen"]'),
+  ).toBeVisible();
 });
 ```
 
@@ -179,14 +183,14 @@ test('judul skenario', async ({ page }) => {
 
 ## Troubleshooting
 
-| Gejala | Kemungkinan penyebab | Solusi |
-|--------|----------------------|--------|
-| `Executable doesn't exist at .../chrome-headless-shell` | Browser Playwright belum di-install | `npx playwright install chromium` |
-| `ECONNREFUSED localhost:5173` | Dev server belum jalan | Biarkan `webServer` di config, atau `npm run dev` |
-| Tes timeout | Assertion terlalu cepat | Tambah `{ timeout: 10_000 }` pada `expect` |
-| Elemen tidak ditemukan | Salah label/role | Inspect di browser → cek teks tombol & label |
-| `Process from config.webServer exited early` | Tes dibatalkan (`Ctrl+C`) atau port 5173 bentrok | Ulangi tes; hentikan `npm run dev` lain di port yang sama |
+| Gejala                                                  | Kemungkinan penyebab                             | Solusi                                                    |
+| ------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------- |
+| `Executable doesn't exist at .../chrome-headless-shell` | Browser Playwright belum di-install              | `npx playwright install chromium`                         |
+| `ECONNREFUSED localhost:5173`                           | Dev server belum jalan                           | Biarkan `webServer` di config, atau `npm run dev`         |
+| Tes timeout                                             | Assertion terlalu cepat                          | Tambah `{ timeout: 10_000 }` pada `expect`                |
+| Elemen tidak ditemukan                                  | Salah label/role                                 | Inspect di browser → cek teks tombol & label              |
+| `Process from config.webServer exited early`            | Tes dibatalkan (`Ctrl+C`) atau port 5173 bentrok | Ulangi tes; hentikan `npm run dev` lain di port yang sama |
 
 ---
 
-*Lanjutkan ke [`frontend-backend-integration-practice.md`](./frontend-backend-integration-practice.md) Lab 2.3 & 4.2 untuk skenario integrasi penuh.*
+_Lanjutkan ke [`frontend-backend-integration-practice.md`](./frontend-backend-integration-practice.md) Lab 2.3 & 4.2 untuk skenario integrasi penuh._

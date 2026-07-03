@@ -1,5 +1,7 @@
 # Latihan Praktik Workshop
+
 ## Frontend–Backend Integration & Debugging Mastery
+
 ### Studi Kasus: CreditApp Demo
 
 **Durasi estimasi:** 3–4 jam (4 sesi)  
@@ -32,13 +34,13 @@ npm run dev
 
 > `npm install` **tidak** mengunduh browser Playwright. Tanpa `npx playwright install chromium`, tes E2E gagal di `browserType.launch`.
 
-| Variabel env | Default | Fungsi |
-|--------------|---------|--------|
-| `VITE_SCORING_MODE` | `mock` | `mock` = hitung lokal; `uat` = panggil backend |
-| `VITE_BACKEND_BASE_URL` | `http://localhost:8080` | Base URL backend Java |
-| `VITE_SCORING_PATH` | `/api/v1/credit-scoring/simulate` | Path endpoint scoring |
-| `VITE_SCORING_SCHEMA` | `aegira` | Bentuk JSON request (`aegira` / `kreditku`) |
-| `VITE_SCORING_DEFAULT_TENURE` | `12` | Tenor default (bulan) untuk DSR |
+| Variabel env                  | Default                           | Fungsi                                         |
+| ----------------------------- | --------------------------------- | ---------------------------------------------- |
+| `VITE_SCORING_MODE`           | `mock`                            | `mock` = hitung lokal; `uat` = panggil backend |
+| `VITE_BACKEND_BASE_URL`       | `http://localhost:8080`           | Base URL backend Java                          |
+| `VITE_SCORING_PATH`           | `/api/v1/credit-scoring/simulate` | Path endpoint scoring                          |
+| `VITE_SCORING_SCHEMA`         | `aegira`                          | Bentuk JSON request (`aegira` / `kreditku`)    |
+| `VITE_SCORING_DEFAULT_TENURE` | `12`                              | Tenor default (bulan) untuk DSR                |
 
 **Catatan:** Setelah mengubah `.env`, restart `npm run dev`.
 
@@ -62,33 +64,33 @@ Di demo ini, layer **Database** disimulasikan oleh backend Java (mode `uat`) ata
 
 **Tujuan:** Memahami alur bisnis sebelum debugging.
 
-| Langkah | Aksi | Yang harus terlihat |
-|---------|------|---------------------|
-| 1 | Buka http://localhost:5173 | Halaman "Pengajuan kredit digital" |
-| 2 | Isi formulir (contoh di bawah) → **Lanjut verifikasi dokumen** | Step indicator pindah ke Verifikasi |
-| 3 | Klik **Periksa** pada ketiga dokumen | Semua badge "Terverifikasi" |
-| 4 | Klik **Lanjut scoring otomatis** | Loading "Menghitung skor kredit…" (~1,6 detik) |
-| 5 | Tunggu hasil | Kartu **Hasil simulasi skor kredit** dengan Kol 1–5 |
+| Langkah | Aksi                                                           | Yang harus terlihat                                 |
+| ------- | -------------------------------------------------------------- | --------------------------------------------------- |
+| 1       | Buka http://localhost:5173                                     | Halaman "Pengajuan kredit digital"                  |
+| 2       | Isi formulir (contoh di bawah) → **Lanjut verifikasi dokumen** | Step indicator pindah ke Verifikasi                 |
+| 3       | Klik **Periksa** pada ketiga dokumen                           | Semua badge "Terverifikasi"                         |
+| 4       | Klik **Lanjut scoring otomatis**                               | Loading "Menghitung skor kredit…" (~1,6 detik)      |
+| 5       | Tunggu hasil                                                   | Kartu **Hasil simulasi skor kredit** dengan Kol 1–5 |
 
 **Data uji contoh:**
 
-| Field | Nilai |
-|-------|-------|
-| Nama | Budi Santoso |
-| Telepon | 08123456789 |
-| Penghasilan | 8500000 |
-| Utang bulanan | 2200000 |
-| Plafon | 40000000 |
-| Tujuan | Modal kerja |
-| Riwayat pembayaran | Baik |
+| Field              | Nilai        |
+| ------------------ | ------------ |
+| Nama               | Budi Santoso |
+| Telepon            | 08123456789  |
+| Penghasilan        | 8500000      |
+| Utang bulanan      | 2200000      |
+| Plafon             | 40000000     |
+| Tujuan             | Modal kerja  |
+| Riwayat pembayaran | Baik         |
 
 **Checklist verifikasi:**
 
-- [ ] Elemen `[data-component="form-pengajuan"]` tampil di langkah 1
-- [ ] Elemen `[data-component="verifikasi-dokumen"]` tampil di langkah 2
-- [ ] Elemen `[data-component="scoring-loading"]` tampil sebentar di langkah 4
-- [ ] Elemen `[data-component="hasil-scoring"]` tampil di langkah 5
-- [ ] Trace ID terlihat di bagian bawah hasil (format `mock-<timestamp>-<random>`)
+- [V] Elemen `[data-component="form-pengajuan"]` tampil di langkah 1
+- [V] Elemen `[data-component="verifikasi-dokumen"]` tampil di langkah 2
+- [V] Elemen `[data-component="scoring-loading"]` tampil sebentar di langkah 4
+- [V] Elemen `[data-component="hasil-scoring"]` tampil di langkah 5
+- [V] Trace ID terlihat di bagian bawah hasil (format `mock-<timestamp>-<random>`)
 
 ---
 
@@ -115,7 +117,7 @@ Buka `src/services/creditScoring.js`. Pada baris berapa keputusan `mock` vs `uat
 
 ## Lab 1.3 — Diagram layer (latihan individu)
 
-Gambar alur untuk skenario: *user klik "Lanjut scoring" sampai angka Kol muncul*.
+Gambar alur untuk skenario: _user klik "Lanjut scoring" sampai angka Kol muncul_.
 
 Format minimal:
 
@@ -150,12 +152,12 @@ Env Vite harus diawali `VITE_` agar terekspos ke browser. Local dev sebaiknya me
 
 Ubah `.env`, restart dev server, lalu catat hasilnya.
 
-| # | Konfigurasi | Hasil yang diharapkan Anda amati | ✓/✗ |
-|---|-------------|----------------------------------|-----|
-| A | `VITE_SCORING_MODE=mock` (default) | Scoring sukses tanpa backend | |
-| B | `VITE_SCORING_MODE=uat` + backend **mati** | Error "Scoring gagal diproses" | |
-| C | `VITE_SCORING_MODE=uat` + `VITE_BACKEND_BASE_URL=http://localhost:9999` | Error koneksi / gagal fetch | |
-| D | `VITE_SCORING_MODE=uat` + `VITE_SCORING_PATH=/api/salah` | HTTP 404 dari backend (jika backend hidup) | |
+| #   | Konfigurasi                                                             | Hasil yang diharapkan Anda amati           | ✓/✗ |
+| --- | ----------------------------------------------------------------------- | ------------------------------------------ | --- |
+| A   | `VITE_SCORING_MODE=mock` (default)                                      | Scoring sukses tanpa backend               |     |
+| B   | `VITE_SCORING_MODE=uat` + backend **mati**                              | Error "Scoring gagal diproses"             |     |
+| C   | `VITE_SCORING_MODE=uat` + `VITE_BACKEND_BASE_URL=http://localhost:9999` | Error koneksi / gagal fetch                |     |
+| D   | `VITE_SCORING_MODE=uat` + `VITE_SCORING_PATH=/api/salah`                | HTTP 404 dari backend (jika backend hidup) |     |
 
 **Langkah untuk skenario B–D:**
 
@@ -176,13 +178,13 @@ Di Network tab (skenario C), status request fetch apa yang terlihat? (`(failed)`
 
 Gunakan skenario **2.1.C** (wrong API URL). Isi checklist secara berurutan:
 
-| # | Layer | Apa yang Anda periksa? | Temuan Anda |
-|---|-------|------------------------|-------------|
-| 1 | UI | Teks di `.err` pada scoring-error | |
-| 2 | Network | URL lengkap request POST | |
-| 3 | API | Apakah request sampai ke server? | |
-| 4 | Config | Nilai `VITE_BACKEND_BASE_URL` di `.env` | |
-| 5 | Fix | Nilai yang benar untuk memperbaiki | |
+| #   | Layer   | Apa yang Anda periksa?                  | Temuan Anda |
+| --- | ------- | --------------------------------------- | ----------- |
+| 1   | UI      | Teks di `.err` pada scoring-error       |             |
+| 2   | Network | URL lengkap request POST                |             |
+| 3   | API     | Apakah request sampai ke server?        |             |
+| 4   | Config  | Nilai `VITE_BACKEND_BASE_URL` di `.env` |             |
+| 5   | Fix     | Nilai yang benar untuk memperbaiki      |             |
 
 ---
 
@@ -203,7 +205,7 @@ Buka `tests/workshop/02-env-config.spec.js` dan implementasikan:
 
 ```javascript
 // TODO Peserta: hapus test.skip dan lengkapi assertion
-test.skip('wrong backend URL shows scoring error', async ({ page }) => {
+test.skip("wrong backend URL shows scoring error", async ({ page }) => {
   // Petunjuk:
   // 1. Set env VITE_SCORING_MODE=uat dan VITE_BACKEND_BASE_URL=http://127.0.0.1:59999
   // 2. Selesaikan alur form → verifikasi → scoring
@@ -280,7 +282,7 @@ headers: {
 3. Log ID yang sama di `logDummyApiDebug`
 4. Verifikasi di Network tab → Request Headers
 
-*Ini tidak wajib untuk lulus workshop; gunakan sebagai stretch goal.*
+_Ini tidak wajib untuk lulus workshop; gunakan sebagai stretch goal._
 
 ---
 
@@ -384,13 +386,15 @@ Minimal flow yang harus dicakup tes Anda:
 
 ```javascript
 // Pseudocode — implementasi di tests/workshop/01-happy-path.spec.js
-await page.goto('/');
-await page.fill('#fullName', '...');
+await page.goto("/");
+await page.fill("#fullName", "...");
 // ... isi semua field wajib
-await page.getByRole('button', { name: 'Lanjut verifikasi dokumen' }).click();
+await page.getByRole("button", { name: "Lanjut verifikasi dokumen" }).click();
 // verifikasi 3 dokumen
-await page.getByRole('button', { name: 'Lanjut scoring otomatis' }).click();
-await expect(page.locator('[data-component="hasil-scoring"]')).toBeVisible({ timeout: 10000 });
+await page.getByRole("button", { name: "Lanjut scoring otomatis" }).click();
+await expect(page.locator('[data-component="hasil-scoring"]')).toBeVisible({
+  timeout: 10000,
+});
 await expect(page.getByText(/Trace ID/)).toBeVisible();
 ```
 
@@ -420,37 +424,38 @@ Tanpa CI/CD lengkap di repo ini, jawab secara konseptual:
 a) Backend Java  
 b) Browser (client-side)  
 c) Database  
-d) Reverse proxy  
+d) Reverse proxy
 
 **2.** File env mana yang sebaiknya tidak di-commit ke git?  
 a) `.env.example`  
 b) `.env`  
 c) `vite.config.js`  
-d) `package.json`  
+d) `package.json`
 
 **3.** Urutan debugging yang benar menurut materi:  
 a) DB → API → Network → UI  
 b) UI → Network → API → Backend → DB  
 c) API → UI → Network  
-d) Log → UI saja  
+d) Log → UI saja
 
 **4.** Trace ID di creditappdemo berguna untuk:  
 a) Styling CSS  
 b) Menghubungkan log antar layer  
 c) Menentukan port Vite  
-d) Validasi CORS  
+d) Validasi CORS
 
 **5.** `route.abort()` di Playwright mensimulasikan:  
 a) Happy path  
 b) Network failure  
 c) CORS success  
-d) Database migration  
+d) Database migration
 
 ## Bagian B — Studi kasus (esai singkat)
 
-**Studi kasus:** Tim QA melaporkan: *"Di staging, formulir bisa disubmit, verifikasi lancar, tapi scoring gagal dengan pesan `Backend scoring gagal (502)`."*
+**Studi kasus:** Tim QA melaporkan: _"Di staging, formulir bisa disubmit, verifikasi lancar, tapi scoring gagal dengan pesan `Backend scoring gagal (502)`."_
 
 Tulis langkah debugging Anda (minimal 5 langkah terurut), termasuk:
+
 - Apa yang dicek di UI
 - Header / URL di Network
 - Env yang diverifikasi
@@ -467,16 +472,16 @@ Tulis langkah debugging Anda (minimal 5 langkah terurut), termasuk:
 
 ## Referensi cepat repo
 
-| Topik | File |
-|-------|------|
-| Service scoring & mode mock/uat | `src/services/creditScoring.js` |
-| Kontrak JSON request/response | `src/services/scoringContract.js` |
-| UI error & hasil | `src/components/HasilScoring.js` |
-| Orchestrasi step | `src/components/App.js` |
-| Dokumentasi API | `docs/api/credit-scoring.md` |
-| Contoh env | `.env.example` |
+| Topik                           | File                              |
+| ------------------------------- | --------------------------------- |
+| Service scoring & mode mock/uat | `src/services/creditScoring.js`   |
+| Kontrak JSON request/response   | `src/services/scoringContract.js` |
+| UI error & hasil                | `src/components/HasilScoring.js`  |
+| Orchestrasi step                | `src/components/App.js`           |
+| Dokumentasi API                 | `docs/api/credit-scoring.md`      |
+| Contoh env                      | `.env.example`                    |
 
 ---
 
-*Internal — Learning and People Development Department*  
-*Workshop: Frontend–Backend Integration & Debugging Mastery*
+_Internal — Learning and People Development Department_  
+_Workshop: Frontend–Backend Integration & Debugging Mastery_
